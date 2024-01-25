@@ -23,5 +23,6 @@ pElem.innerHTML = 'ldx #' + hex + '&nbsp;&nbsp;<br />stx #d020<br />stx #d021';
 const hexColor = '#' + text[index];
 let elements = document.getElementsByClassName('js');
 for (var i = 0; i < elements.length; i++) {
+	elements[i].style.borderColor = hexColor;
 	elements[i].style.color = hexColor;
 }
