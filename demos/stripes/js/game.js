@@ -1,19 +1,22 @@
+const screen_w = document.body.clientWidth;
+const dpr = window.devicePixelRatio;
+
 let game = new Phaser.Game({
-  width: 800,
-  height: 480, 
-  backgroundColor: '#000', 
+  width: screen_w,
+  height: 480 * dpr,
+  backgroundColor: '#000',
   physics: { default: 'arcade' },
-  parent: 'game', 
+  parent: 'game',
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     min: {
-      width: 800,
-      height: 480,
+      width: screen_w,
+      height: 480 * dpr,
     },
     max: {
-      width: 800,
-      height: 480,
+      width: screen_w,
+      height: 480 * dpr,
     },
   },
 });

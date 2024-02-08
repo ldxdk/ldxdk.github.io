@@ -7,7 +7,7 @@ class Stripes {
 
 		var color = true;
 		for (var i = 0; i < STRIPES; i++) {
-			this.stripesPositions[i] = (i + 1) * 4;
+			this.stripesPositions[i] = ((i + 1) * 4) * dpr;
 			this.stripesColors[i] = color ? 0xff0000 : 0x0000ff;
 			color = !color;
 		}
@@ -26,10 +26,10 @@ class Stripes {
 
 	animate() {
 		for (var i = 0; i < STRIPES; i++) {
-			this.stripesPositions[i] += 0.2;
+			this.stripesPositions[i] += (0.2 * dpr);
 		}
 
-		if (this.stripesPositions[0] <= 4) {
+		if (this.stripesPositions[0] <= (4 * dpr)) {
 			return;
 		}
 
@@ -42,8 +42,8 @@ class Stripes {
 	draw(graphics, y) {
 		for (var i = 0; i < STRIPES; i++) {
 			graphics.fillStyle(this.stripesColors[i], 1.0);
-			graphics.fillRect(0, y, 800, this.stripesPositions[i]);
-			y += this.stripesPositions[i] - 1;
+			graphics.fillRect(0, y, screen_w, this.stripesPositions[i] * dpr);
+			y += (this.stripesPositions[i] - 1) * dpr;
 		}
 	}
 }
