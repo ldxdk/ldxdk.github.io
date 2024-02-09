@@ -1,16 +1,14 @@
 {
+	"Attendee": "bschau@posteo.net",
 	"Texts": {
-		"Birthday": "F&oslash;dselsdag: {0} ({1} &aring;r)",
-		"Death": "D&oslash;dsdag: {0} ({1} &aring;r siden)",
-		"Wedding": "Bryllupsdag: {0} ({1} &aring;r siden)",
-		"Today": "<b>{0} i dag!</b>",
-		"Pluralis": "e",
-		"InDays": "{0} om {1} dag{2}"
+		"Birthday": "Fødselsdag: {0} ({1})",
+		"Death": "Dødsdag: {0} ({1})",
+		"Wedding": "Bryllupsdag: {0} ({1})"
 	},
 	"Icons": {
-		"Birthday": "&#127874;",
-		"Death": "&#10013;",
-		"Wedding": "&#10084;"
+		"Birthday": "🎂",
+		"Death": "✝",
+		"Wedding": "❤"
 	},
 	"Events": [
 		{
@@ -36,7 +34,7 @@
 		{
 			"Date": "1971-01-30",
 			"Type": "Birthday",
-			"Description": "Carsten H&oslash;y"
+			"Description": "Carsten Høy"
 		},
 		{
 			"Date": "1943-01-31",
@@ -56,7 +54,7 @@
 		{
 			"Date": "1973-03-17",
 			"Type": "Birthday",
-			"Description": "Charlotte &lt;3"
+			"Description": "Charlotte ❤"
 		},
 		{
 			"Date": "1970-04-04",
@@ -91,7 +89,7 @@
 		{
 			"Date": "2012-05-25",
 			"Type": "Birthday",
-			"Description": "Agnes &amp; Carl"
+			"Description": "Agnes & Carl"
 		},
 		{
 			"Date": "1939-06-01",
@@ -131,7 +129,7 @@
 		{
 			"Date": "1995-08-05",
 			"Type": "Wedding",
-			"Description": "Maiken &amp; Klaus"
+			"Description": "Maiken & Klaus"
 		},
 		{
 			"Date": "1954-08-12",
@@ -161,7 +159,7 @@
 		{
 			"Date": "2005-11-11",
 			"Type": "Wedding",
-			"Description": "Brian &amp; Charlotte"
+			"Description": "Brian & Charlotte"
 		},
 		{
 			"Date": "1940-12-01",
