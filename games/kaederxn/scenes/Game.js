@@ -43,6 +43,8 @@ class Game extends Phaser.Scene {
 
         this.cameras.main.fadeIn(250, 0, 0, 0)
         sndStartNewRound.play();
+        this.startTime = Date.now();
+        this.lag = 0;
         this.gameLoaded = true;
     }
 
@@ -51,6 +53,18 @@ class Game extends Phaser.Scene {
             return;
         }
 
+        var current = Date.now();
+        var elapsed = current - this.startTime;
+        this.startTime = current;
+        this.lag += elapsed;
+        const frameDuration = 1000/60;
+        while (this.lag > frameDuration) {
+          this.innerUpdate();
+          this.lag -= frameDuration;
+        }
+    }
+
+    innerUpdate() {
         if (!this.gameFinishing) {
           this.controlPlayer();
         }

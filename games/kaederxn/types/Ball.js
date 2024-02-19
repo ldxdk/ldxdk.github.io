@@ -17,7 +17,7 @@ class Ball {
     }
 
     getSpeed() {
-        var speed = rangeInt(2, 6);
+        var speed = rangeInt(3, 5);
         return rangeInt(0, 49) >= 25 ? speed : -speed;
     }
 
