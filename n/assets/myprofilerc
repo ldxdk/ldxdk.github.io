@@ -60,9 +60,20 @@ if test -d "$HOME/Workbench"; then
 	alias cdw="cd $HOME/Workbench"
 fi
 
+function ps1trail
+{
+	printf "\n$ "
+}
 type -p git >/dev/null
 if test $? -eq 0; then
 	alias gitg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+	_reset="$(tput sgr0)"
+	_red="$(tput setaf 1)"
+	_cyan="$(tput setaf 6)"
+	_yellow="$(tput setaf 3)"
+	_green="$(tput setaf 2)"
+
+	export PS1="\[$_cyan\]\u\[$_reset\]@\[$_yellow\]\h\[$_reset\] \[$_green\]\w\[$_reset\]\[$_red\]\[$_reset\]$(ps1trail)"
 fi
 
 type -p fortune >/dev/null
