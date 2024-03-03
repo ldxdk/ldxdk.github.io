@@ -59,10 +59,6 @@ fi
 alias ll='ls -lpF'
 alias sysupd='sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y'
 alias evtupd="curl -o $HOME/.eventsrc https://ldx.dk/happenings.json"
-alias remtilde='find . -type f -iname "*~" -exec rm -vf {} \;'
-alias wi='find . -type f -iname'
-alias wid='find . -type d -iname'
-alias sauk='python3 -m http.server'
 alias sshr='ssh rsync'
 
 export CLICOLOR="yes"
