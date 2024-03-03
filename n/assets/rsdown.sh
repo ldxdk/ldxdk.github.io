@@ -24,7 +24,7 @@ for arg in "$@"; do
 	fi
 done
 
-if test -e "$HOME/.rsmaster"; then
+if test -e ".rsmaster"; then
 	if test -z "$master"; then
 		echo "You cannot restore on master unless you specify the master option" >&2
 		usage >&2
@@ -65,7 +65,7 @@ if test -n "$dryrun"; then
 	read line
 fi
 
-rsync_flags="$dryrun -rvz -zz --progress $mode --delete $iconv --exclude=.Spotlight-V100 --exclude=.DocumentRevisions-V100 --exclude=.DS_Store --exclude=.fseventsd --exclude=.Trashes --exclude=.TemporaryItems --exclude=.git --exclude=.gitignore --exclude=.gd --exclude=*~"
+rsync_flags="$dryrun -rvz -zz --progress $mode --delete $iconv --exclude=.Spotlight-V100 --exclude=.DocumentRevisions-V100 --exclude=.DS_Store --exclude=.fseventsd --exclude=.Trashes --exclude=.TemporaryItems --exclude=.git --exclude=.gitignore --exclude=.gd --exclude=*~ --exclude=.rsmaster"
 
 src="rsync:${root}/"
 dst="."
