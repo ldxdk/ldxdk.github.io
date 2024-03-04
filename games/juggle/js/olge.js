@@ -75,10 +75,23 @@ class OLGE {
         this._scenes = false;
         this._updateFunc = false;
         this._renderFunc = false;
-        this._playAudio = navigator.getAutoplayPolicy("mediaelement") === "allowed";
+        this._playAudio = this.canPlayAudio();
         this.setCanvasSize();
         window.addEventListener('resize', () => this.setCanvasSize());
     }
+
+	/**
+	 * Can we play audio?
+	 *
+	 * @return true / false.
+	 */
+	canPlayAudio() {
+		if (!navigator.getAutoplayPolicy) {
+			return false;
+		}
+
+		return navigator.getAutoplayPolicy("mediaelement") === "allowed";
+	}
 
     /**
      * Initialize font.
