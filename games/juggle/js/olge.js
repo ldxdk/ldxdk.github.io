@@ -9,7 +9,7 @@
 /**
  * @classdesc
  * @class OLGE
- * 
+ *
  * Inspired by the article
  *
  * 			"Joys of Small Game Development"
@@ -21,12 +21,12 @@
  *
  *     --- Brian
  *
- * OLGE Version: 1.0
+ * OLGE Version: 1.1
  */
 class OLGE {
     /**
      * Internal assets loader.
-     * 
+     *
      * @param {array} keys - The list of keys to load assets for.
      * @param {function} callback  - Callback when the last asset has been loaded.
      */
@@ -57,7 +57,7 @@ class OLGE {
 
     /**
      * Initialize OLGE.
-     * 
+     *
      * @param {string} canvasId - HTML ID of canvas.
      * @param {number} screenW - Virtual screen width.
      * @param {number} screenH - Virtual screen height.
@@ -82,7 +82,7 @@ class OLGE {
 
     /**
      * Initialize font.
-     * 
+     *
      * @param {string} fontDescription - "5px MicroChat".
      * @param {number} glyphWidth - Width of glyph (incl. spacing),
      * @param {number} glyphHeight - Height of glyph (incl. spacing),
@@ -95,14 +95,14 @@ class OLGE {
 
     /**
      * Load assets.
-     * 
+     *
      * Define assets as:
-     * 
+     *
      *  var assets = new Map([
      *      [ "player", "spritesheet.png" ],
      *      [ "ping", "ping.mp3" ],
      *  ]);
-     * 
+     *
      * @param {map} assets - Map with assets.
      * @param {function} callback - Callback when all assets have been loaded.
      */
@@ -132,14 +132,14 @@ class OLGE {
 
     /**
      * Set scenes.
-     * 
+     *
      * Define scenes:
-     * 
+     *
      *  var scenes = new Map([
      *      "scene-name-1", [ "init-func" | ignore, update-func | "ignore", render-func | "ignore" ] ],
      *      "scene-name-2", [ "init-func" | ignore, update-func | "ignore", render-func | "ignore" ] ],
      *  ]);
-     * 
+     *
      * @param {map} scenes - The scenes for OLGE.
      */
     setScenes(scenes) {
@@ -148,7 +148,7 @@ class OLGE {
 
     /**
      * Activate a scene.
-     * 
+     *
      * @param {string} scene - Scene (name) to activate.
      */
     activateScene(scene) {
@@ -181,7 +181,7 @@ class OLGE {
 
     /**
      * Is the argument "ignore".
-     * 
+     *
      * @param {string} argument.
      * @return true if argument is "ignore";
      */
@@ -198,7 +198,7 @@ class OLGE {
 
     /**
      * Play the audio by asset-key.
-     * 
+     *
      * @param {string} key - Asset key.
      */
     playAudio(key) {
@@ -217,9 +217,9 @@ class OLGE {
 
     /**
      * Random number between min - max.
-     * 
-     * @param {number} min 
-     * @param {number} max 
+     *
+     * @param {number} min
+     * @param {number} max
      * @returns Random number.
      */
     random(min, max) {
@@ -227,10 +227,9 @@ class OLGE {
     }
 
     /**
-     * 
-     * @param {*} this 
-     * @param {*} _loopLocked 
-     * @returns 
+     *
+     * @param {function} update function
+     * @param {function} render function
      */
     _loop(update, render) {
         if (this._loopLocked) {
@@ -260,7 +259,7 @@ class OLGE {
 
     /**
      * Get translated click coordinate from event.
-     * 
+     *
      * @param {event} event - Event.
      * @returns [x, y]
      */
@@ -284,7 +283,7 @@ class OLGE {
 
     /**
      * Draw text string.
-     * 
+     *
      * @param {string} text - Text to render.
      * @param {number} x - X coordinate.
      * @param {number} y - Y coordinate.
