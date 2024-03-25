@@ -8,18 +8,20 @@
 	<link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-	<h1>Shortcuts</h1>
+	<h1>Vim</h1>
+	<h2>Shortcuts</h2>
 	<ul>
 		<li>Press '*' on a word to highlight all occurences.</li>
 		<li>CTRL + N for word completion.</li>
 	</ul>
 	<p><br /></p>
-	<h1>Search for nu (\xl00) character</h1>
+
+	<h2>Search for nu (\xl00) character</h2>
 	<pre>/^Vx00</pre>
 	<p>... where ^V means Ctrl-V. That will search for the character whose hex value is 0x00.</p>
 	<p><br /></p>
 
-	<h1>vim (git bash) and gvim (Windows)</h1>
+	<h2>vim (git bash) and gvim (Windows)</h2>
 	<p>The easiest way to share files between vim in git bash and gvim in native Windows is to redirect the git bash installation to the windows files:</p>
 	<pre>cd ~/.vim
 mv * ~/vimfiles
@@ -28,7 +30,7 @@ rm -fr .vim
 ln -s ~/vimfiles .vim</pre>
 	<p><br /></p>
 
-	<h1>Vim Custom Installation - You Complete Me</h1>
+	<h2>Vim Custom Installation - You Complete Me</h2>
 	<p>Uninstall system installed Vim:</p>
 	<pre>sudo apt remove $(dpkg -l | grep vim | grep ^ii | tr -s ' ' | cut -f 2 -d ' ')</pre>
 
@@ -107,7 +109,7 @@ filetype plugin indent on</pre>
 	<pre>vim -c PluginInstall</pre>
 	<p><br /></p>
 
-	<h1>Vim Custom Installation - CoC</h1>
+	<h2>Vim Custom Installation - CoC</h2>
 	<p>Uninstall system installed Vim:</p>
 	<pre>sudo apt remove $(dpkg -l | grep vim | grep ^ii | tr -s ' ' | cut -f 2 -d ' ')</pre>
 
