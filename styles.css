@@ -1,0 +1,29 @@
+body {
+	font-family: Arial, sans-serif;
+	font-size: 16px;
+	line-height: 18px;
+	height: 100%;
+	margin: 0 auto;
+	color: #111;
+}
+
+#outer {
+	padding: 15% 0;
+}
+
+#inner {
+	text-align: center;
+}
+
+#mnemonic {
+	text-align: center;
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 90%;
+}
+
+#latin {
+	text-align: left;
+	width: 12em;
+	margin: 0 auto;
+	font-size: 90%;
+}
