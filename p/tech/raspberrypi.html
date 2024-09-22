@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Raspberry PI</title>
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<h1>Raspberry PI</h1>
+	<h2>Leah</h2>
+	<h3>After installation</h3>
+	<p>Add to <code>/etc/fstab</code>:</p>
+	<pre>LABEL=HOME      /home   ext4    defaults        0       1
+LABEL=TMP       /var/tmp        tmpfs   rw,mode=1777    0       1
+LABEL=DATA      /data   ext4    defaults,nofail 0       1</pre>
+	<p>Add to <code>$HOME/.bashrc</code>:</p>
+	<pre>export TMPDIR="/var/tmp"</pre>
+	<p>Disable un-needed services:</p>
+	<pre>for i in bluetooth avahi-daemon triggerhappy ModemManager; do echo $i; sudo systemctl stop $i; sudo systemctl disable $i; done</pre>
+	<p>Configure static IP:</p>
+	<pre>nmtui device status   # to see all network devices
+sudo nmtui edit "preconfigured"   # (use the name from the Connection column)</pre>
+	<p>Scroll to <b>IPv4 CONFIGURATION</b> and toggle to <i>Manual</i>. Fill in the rest.</p>
+
+	<h3>Samba</h3>
+	<p>In <code>/etc/samba/smb.conf</code>:</p>
+	<ol>
+		<li>Change Workgroup to <i>SCHAU</i>.</li>
+		<li>Add this section:
+		<pre>[data]
+            path = /data
+            browsable = yes
+            guest ok = yes
+            read only = yes
+            write list = bs
+            create mask = 0600
+            directory mask = 0700
+            valid users = bs cfs</pre></li>
+	</ol>
+	<p>Adding user (as root):</p>
+	<pre>cd /var/lib/samba/private
+smbpassword -a {username}</pre>
+	<p>Map drive: use <i>schau\bs</i> as username.</p>
+	<p><br /></p>
+
+	<h2>Phoebe</h2>
+	<h3>Before installation</h3>
+	<p>Before booting for the first time, set</p>
+	<pre>/etc/dphys-swapfile: CONF_SWAPSIZE=2048
+/etc/sysctl.comf: vm.swappiness=10</pre>
+	<p>set <code>in /etc/hosts</code>:</p>
+	<pre>192.168.1.242    phoebe
+x.y.z.m          phoebe.schau.dk      # public IP address</pre>
+
+	<h3>After installation</h3>
+	<p>Disable services:</p>
+	<pre>for i in bluetooth avahi-daemon triggerhappy ModemManager; do echo $i; sudo systemctl stop $i; sudo systemctl disable $i; done</pre>
+	<p>System configuration:</p>
+	<pre>hostnamectl set-hostname phoebe.schau.dk
+dpkg-reconfigure hostname
+dpkg-reconfigure tzdata			# select Europe/Copenhagen
+dpkg-reconfigure locales		# select en-dk.UTF-8 and UTF-8</pre>
+	<p>Update:</p>
+	<pre>apt update -y &amp;&amp; apt upgrade -y &amp;&amp; apt dist-upgrade -y &amp;&amp; apt full-upgrade -y &amp;&amp; apt autoremove -y</pre>
+	<p>Reboot.</p>
+	<p>Install programs:</p>
+	<pre>for i in vim-nox python3 python3-pip pylint apache2 bsd-mailx postfix opendkim opendkim-tools opendmarc recode certbot fail2ban; do echo $i; sudo apt install -y $i; done</pre>
+	<p>Reboot.</p>
+	<p>Disable sudo:</p>
+	<pre>sudo su -
+passwd			# set root password
+remove 'bs' from sudo group
+rm -f /etc/sudoers.d/010_pi-nopasswd
+rm /home/bs/.sudo_as_admin_successful</pre>
+	<p><br /></p>
+	<p><b>Everything below must be done as root - <i>su -</i>.</b></p>
+	<p><br /></p>
+	<p>Unroll previous Phoebe backup.</p>
+	<p>Request certificate:</p>
+	<pre>certbot -d phoebe.schau.dk --authenticator standalone certonly</pre>
+	<p>Add <b>Mutex posixsem</b> to <code>/etc/apache2/apache2.conf</code>.</p>
+	<p>Uncomment or remove <b>Port 80</b> from/in <code>/etc/apache2/ports.conf</code>.</p>
+	<pre>rm -f /etc/apache2/conf-enabled/serve-cgi-bin.conf
+a2dismod status autoindex</pre>
+	<p>Change <code>/etc/apache2/mods-enabled/mpm_event.conf</code>:</p>
+	<pre>StartServers            1
+MinSpareThreads         5
+MaxSpareThreads         25
+ThreadLimit             64
+ThreadsPerChild         25
+MaxRequestWorkers       150
+MaxConnectionsPerChild  0</pre>
+	<p>Setup WebDAV:</p>
+	<pre>a2enmod auth_basic dav dav_fs dav_lock socache_shmcb ssl headers
+cd /home
+mkdir webdav
+cd webdav
+mkdir run enpass
+cd run
+touch users
+chmod 644 users
+htpasswd users bs
+cd /home
+mkdir -p webs/phoebe
+chown -R www-data:www-data webdav webs
+cd /root/sys/apache2
+./relink.sh</pre>
+	<p>Enable maintenance:</p>
+	<pre>crontab -e       # as root, add the line below:
+0 1 * * * /root/sys/maintenance.sh</pre>
+	<p>Reboot.</p>
+</body>
+</html>
