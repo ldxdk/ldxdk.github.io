@@ -26,17 +26,23 @@ flush privileges;</pre>
 	<p><br /></p>
 
 	<h2>Apache Installation</h2>
-	<pre>apt install -y apache2 libapache2-mod-php php-mysql php-gd</pre>
+	<p>Upgrade php to v8.3 (as root):</p>
+	<pre>apt-get install ca-certificates apt-transport-https software-properties-common
+add-apt-repository ppa:ondrej/php
+apt update -y &amp;&amp; apt upgrade -y
+apt install php8.3 libapache2-mod-php8.3 -y
+a2dismod php8.1
+a2enmod php8.3</pre>
+	<pre>apt install -y apache2 libapache2-mod-php8.3 php8.3-mysql php8.3-gd</pre>
 
 	<p>... set the following keys in <code>/etc/php/XX/[apache|cli]/php.ini</code>:</p>
 	<pre>error_log = syslog
 upload_max_filesize = 20M
 date.timezone = Europe/Copenhagen
-extension = gd
 memory_limit = 512M	# only for apache/php.ini</pre>
 	<p>... enable modules:</p>
 	<pre>a2enmod auth_basic headers rewrite socache_shmcb ssl
-a2enmod php8.1    # optional</pre>
+a2enmod php8.3    # optional</pre>
 	<p><br /></p>
 
 	<h2>On debian 9, sudden exits</h2>
@@ -112,16 +118,9 @@ systemctl restart apache2</pre>
 	<h3>Installation</h3>
 	<p>Tested on Ubuntu 22.04.</p>
 	<p>Prepare Apache Webserver, set <code>DocumentRoot</code> to <code>/home/sky</code>.</p>
-	<p>Upgrade php to v8.3 (as root):</p>
-	<pre>apt-get install ca-certificates apt-transport-https software-properties-common
-add-apt-repository ppa:ondrej/php
-apt update -y &amp;&amp; apt upgrade -y
-apt install php8.3 libapache2-mod-php8.3 -y
-a2dismod php8.1
-a2enmod php8.3</pre>
 
 	<p>Install extra php-modules:</p>
-	<pre>sudo apt install php-zip php-dom php-xmlwriter php-xml php-mbstring php-gd php-simplexml php-curl php8.1-imagick php-gmp php-bcmath php-intl php-bz2 libmagickcore-6.q16-6-extra php-apcu curl -y</pre>
+	<pre>sudo apt install php8.3-zip php8.3-dom php8.3-xmlwriter php8.3-xml php8.3-mbstring php8.3-gd php8.3-simplexml php8.3-curl php8.3-imagick php8.3-gmp php8.3-bcmath php8.3-intl php8.3-bz2 libmagickcore-6.q16-6-extra php8.3-apcu curl -y</pre>
 	<p>Enable apcu:</p>
 	<pre>phpenmod apcu</pre>
 
@@ -137,7 +136,7 @@ a2enmod php8.3</pre>
 	<p>Then, log in and configure your profile - add email-address, phone number and so on.</p>
 
 	<p>Add to crontab for the user running Nextcloud:</p>
-	<pre>*/5 * * * * /usr/bin/php /home/webs/sky/cron.php</pre>
+	<pre>*/5 * * * * /usr/bin/php /home/sky/cron.php</pre>
 
 	<p>Add to <code>/home/sky/config/config.php</code>:</p>
 	<pre>'memcache.local' =&gt; '\\OC\\Memcache\\APCu',
@@ -155,12 +154,13 @@ opcache.memory_consumption=128
 opcache.interned_strings_buffer=32</pre>
 
 	<p>Log into Nextcloud, go to <i>Basic Settings</i> and configure email.</p>
-	<p>Then, in <i>Apps</i>, go to <i>Security</i> and enable <b>Two-Factor TOTP Provider</b>.</p>
+	<p>Then, in <i>Apps</i>, go to <i>Security</i> and enable <b>Two-Factor TOTP Provider</b> (might be in Deactivated apps).</p>
 	<p>Go to <i>Personal -&gt; Security</i>.  Enable <b>TOTP</b>.</p>
 
 	<p>Run:</p>
 	<pre>cd /home/sky
-php occ db:add-missing-indices</pre>
+php occ db:add-missing-indices
+php occ maintenance:repair --include-expensive</pre>
 
 	<p>Lastly, visit the <i>Administration settings -> Overview</i> and correct any remaining issues.</p>
 	<p><br /></p>
