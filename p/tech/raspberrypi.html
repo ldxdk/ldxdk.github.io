@@ -23,6 +23,30 @@ LABEL=DATA      /data   ext4    defaults,nofail 0       1</pre>
 	<pre>nmtui device status   # to see all network devices
 sudo nmtui edit "preconfigured"   # (use the name from the Connection column)</pre>
 	<p>Scroll to <b>IPv4 CONFIGURATION</b> and toggle to <i>Manual</i>. Fill in the rest.</p>
+	<h4>Home Assistant</h4>
+	<p>Before installing Home Assistant:</p>
+	<pre>sudo apt update -y &amp;&amp; sudo apt upgrade -y
+sudo apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev  libsqlite3-dev
+wget https://www.python.org/ftp/python/3.12.7/Python-3.12.7.tgz
+tar xzf Python-3.12.7.tgz
+cd Python-3.12.7
+./configure --enable-optimizations
+make -j 4
+sudo make altinstall
+sudo rm /usr/bin/python /usr/bin/python3
+sudo ln -s /usr/local/bin/python3.12 /usr/bin/python
+sudo ln -s /usr/bin/python /usr/bin/python3
+which python python3</pre>
+	<p>... should output:</p>
+	<pre>/usr/bin/python
+/usr/bin/python3</pre>
+	<p>Then:</p>
+	<pre>python -VV
+python3 -VV</pre>
+	<p>... should output something like:</p>
+	<pre>Python 3.12.7 (main, Nov 29 2024, 08:07:46) [GCC 10.2.1 20210110]
+Python 3.12.7 (main, Nov 29 2024, 08:07:46) [GCC 10.2.1 20210110]</pre>
+	<p>Date and GCC version may / will differ.</p>
 
 	<h3>Samba</h3>
 	<p>In <code>/etc/samba/smb.conf</code>:</p>
