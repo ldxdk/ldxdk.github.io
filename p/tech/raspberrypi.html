@@ -93,7 +93,28 @@ dpkg-reconfigure locales		# select en-dk.UTF-8 and UTF-8</pre>
 	<pre>apt install ca-certificates apt-transport-https software-properties-common -y
 apt install vim-nox python3 python3-pip pylint bsd-mailx postfix opendkim opendkim-tools opendmarc recode certbot fail2ban -y
 apt install apache2 php libapache2-mod-php -y
-apt install php-zip php-sqlite3 php-dom php-json php-sockets php-ctype php-iconv php-fileinfo php-exif php-xmlwriter php-xml php-mbstring php-gd php-simplexml php-curl php-imagick php-gmp php-bcmath php-intl php-bz2 libmagickcore-6.q16-6-extra php-apcu curl openssl sqlite -y</pre>
+apt install php-uuid php-zip php-sqlite3 php-dom php-json php-sockets php-ctype php-iconv php-fileinfo php-exif php-xmlwriter php-xml php-mbstring php-gd php-simplexml php-curl php-imagick php-gmp php-bcmath php-intl php-bz2 libmagickcore-6.q16-6-extra php-apcu curl openssl sqlite3 -y</pre>
+	<p>Set the following keys in <code>/etc/php/XX/[apache|cli]/php.ini</code>:</p>
+	<pre>error_log = syslog
+upload_max_filesize = 20M
+date.timezone = Europe/Copenhagen
+memory_limit = 512M	# only for apache/php.ini</pre>
+	<p>Add to <code>/etc/php/XX/cli/php.ini</code> at the bottom:</p>
+	<pre>[apc]
+apc.enable_cli=1</pre>
+	<p>Add to <code>/etc/php/XX/apache2/php.ini</code> - locate the existing block and adjust:</p>
+	<pre>[opcache]
+opcache.enable=1
+opcache.memory_consumption=128
+opcache.interned_strings_buffer=32</pre>
+
+	<p>Enable modules:</p>
+	<pre>a2enmod auth_basic headers rewrite socache_shmcb ssl php8.2</pre>
+	<p><br /></p>
+
+	<p>Enable apcu:</p>
+	<pre>phpenmod apcu</pre>
+
 	<p>Reboot.</p>
 	<p>Disable sudo:</p>
 	<pre>sudo su -
