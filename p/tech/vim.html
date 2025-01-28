@@ -35,17 +35,23 @@
 	<p>Install vim from sources: <a href="https://www.vim.org/git.php">https://www.vim.org/git.php</a></p>
 
 	<p>If you plan to build gvim as well on Ubuntu or Pop!OS then you must run <code>apt build-dep vim-gtk</code> before the following:</p>
-	<pre>git clone https://github.com/vim/vim.git
+	<pre>
+cd /usr/local/src
+sudo su -
+git clone https://github.com/vim/vim.git
+chown -R bs:bs
+exit
 cd vim
 ./configure --enable-python3interp [--enable-gui # to enable gvim]
 make
 sudo make install</pre>
 
+	<p>golang is optional, but:</p>
 	<p>Install golang: <a href="https://golang.org/doc/install">https://golang.org/doc/install</a></p>
 	<p>Update the go language server:</p>
 	<pre>GO111MODULE=on go install golang.org/x/tools/gopls@latest</pre>
 
-	<p>Install latest nodejs (v21 as of this writing) by following the guide at <a href="https://github.com/nodesource/distributions#debian-and-ubuntu-based-distributions">https://github.com/nodesource/distributions#debian-and-ubuntu-based-distributions</a>.</p>
+	<p>Install latest nodejs (v23 as of this writing) by following the guide at <a href="https://github.com/nodesource/distributions#debian-and-ubuntu-based-distributions">https://github.com/nodesource/distributions#debian-and-ubuntu-based-distributions</a>.</p>
 
 	<p>Redirect npm packages to folder in home:</p>
 	<pre>mkdir -p ~/.npm-global/lib
@@ -72,18 +78,20 @@ export NPM_PACKAGES PATH</pre>
 	<pre>curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim</pre>
 
 	<p>Link <code>.vimrc</code> to master copy:</p>
-	<pre>ln -s $HOME/.sys/etc/vimrc .vimrc
-ln -s $HOME/sys/etc/vimrc .vimrc   # only for gvim support</pre>
+	<pre>ln -s $HOME/Repos/dharma/vimrc .vimrc
+ln -s $HOME/Repos/dharma/vimrc .gvimrc   # only for gvim support</pre>
 
 	<p>Install vim plugins:</p>
 	<pre>vim -c PlugInstall
 #cd ~/.vim/plugged/coc.nvim
 #yarn install
 cd
-vim -c "CocInstall coc-json" -c "CocInstall coc-tsserver" -c "CocInstall coc-html" -c "CocInstall coc-css" -c "CocInstall coc-python" -c "CocInstall coc-go" -c "CocInstall coc-snippets"</pre>
+vim -c "CocInstall coc-json" -c "CocInstall coc-tsserver" -c "CocInstall coc-html" -c "CocInstall coc-css" -c "CocInstall coc-python" -c "CocInstall coc-snippets"
+# if go is needed: vim -c "CocInstall coc-go"
+</pre>
 
 	<p>Install additional libs for <code>coc-python</code>:</p>
-	<pre>pip3 install jedi</pre>
+	<pre>sudo apt install python3-jedi</pre>
 
 	<h2>Vim (git bash) and gvim (Windows)</h2>
 	<p>The easiest way to share files between vim in git bash and gvim in native Windows is to redirect the git bash installation to the windows files:</p>

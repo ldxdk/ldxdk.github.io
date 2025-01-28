@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Development</title>
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<h1>Cargo</h1>
+	<pre>cargo new [projectname]          # create new project
+cargo build                      # build debug build
+cargo build --release            # build release build
+cargo check                      # check if can build (faster than building)
+cargo update                     # update creates
+cargo run                        # build and run
+cargo doc --open                 # build docs (incl. crates docs) and open
+cargo clean                      # cleanup build files</pre>
+
+	<h1>CocoaPods - installation</h1>
+	<pre>cd
+chown bs:staff .local
+curl -L https://get.rvm.io | bash -s stable</pre>
+	<p>Reopen terminal, then:</p>
+<pre>rvm install ruby-3.1.2
+rvm use ruby-3.1.2
+rvm --default use 3.1.2
+gem update --system
+gem install cocoapods -V</pre>
+
+	<h1>NPM: Make packages local to user</h1>
+<pre>mkdir ~/.npm-global
+npm config set prefix '~/.npm-global'</pre>
+<p>... add to profile:</p>
+<pre>NPM_PACKAGES="$HOME/.npm-global"
+PATH="$NPM_PACKAGES/bin:$PATH"
+export NPM_PACKAGES PATH</pre>
+
+	<h1>Go</h1>
+	<h2>Building and stripping binary</h2>
+<pre>go build -ldflags '-s'</pre>
+
+	<h2>Building Linux binary on Windows</h2>
+<pre>$env:GOOS="linux" go build</pre>
+
+	<h2>go install: no install location for directory</h2>
+	<p>When <code>go install</code> fails with</p>
+	<p><i>"go install: no install location for directory"</i></p>
+	<p>... then set <code>$GOBIN</code> to <code>$GOPATH/bin</code>.</p>
+</body>
+</html>
