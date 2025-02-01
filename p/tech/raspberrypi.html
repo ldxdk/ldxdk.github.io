@@ -9,6 +9,58 @@
 </head>
 <body>
 	<h1>Raspberry PI</h1>
+	<h2>Thor</h2>
+	<h3>Before first boot</h3>
+	<p>Before booting for the first time, set</p>
+	<pre>/etc/dphys-swapfile: CONF_SWAPSIZE=1024
+/etc/sysctl.conf: vm.swappiness=10</pre>
+	<p>set <code>in /etc/hosts</code>:</p>
+	<pre>192.168.3.99    thor.schau.dk    thor</pre>
+
+	<h3>After first boot</h3>
+	<p>System configuration:</p>
+	<pre>hostnamectl set-hostname thor.schau.dk
+dpkg-reconfigure hostname
+dpkg-reconfigure tzdata			# select Europe/Copenhagen
+dpkg-reconfigure locales		# select en-dk.UTF-8 and UTF-8</pre>
+	<p>Disable services:</p>
+	<pre>for i in bluetooth avahi-daemon triggerhappy ModemManager; do echo $i; sudo systemctl stop $i; sudo systemctl disable $i; done</pre>
+	<p>Update:</p>
+	<pre>apt update -y &amp;&amp; apt upgrade -y &amp;&amp; apt dist-upgrade -y &amp;&amp; apt full-upgrade -y &amp;&amp; apt autoremove -y</pre>
+	<p>Reboot.</p>
+	<p>Install programs:</p>
+	<pre>apt install apt-transport-https software-properties-common -y
+apt install vim-nox python3 python3-pip pylint recode -y
+apt install samba -y</pre>
+	<p>Reboot.</p>
+	<p>Prepare for data (as root):</p>
+	<pre>mkdir /home/data
+for i in Arkiv Depot Documents Music OurLife; do mkdir /home/data/$i; chown bs:bs /home/data/$i; done</pre>
+
+	<h3>Samba</h3>
+	<p>In <code>/etc/samba/smb.conf</code>:</p>
+	<ol>
+		<li>Change Workgroup to <i>SCHAU</i>.</li>
+		<li>Uncomment sections: [homes], [printers], [print$]</li>
+		<li>Add this section:
+		<pre>[data]
+            path = /home/data
+            browsable = yes
+            guest ok = yes
+            read only = yes
+            write list = bs
+            create mask = 0600
+            directory mask = 0700
+            valid users = bs cfs</pre></li>
+	</ol>
+	<pre>useradd -m cfs
+chsh -s /sbin/nologin cfs</pre>
+	<p>Adding user (as root):</p>
+	<pre>cd /var/lib/samba/private
+for i in bs cfs; do smbpassword -a $i; done</pre>
+	<p>Map drive: use <i>schau\bs</i> as username.</p>
+	<p><br /></p>
+
 	<h2>Leah</h2>
 	<h3>After installation</h3>
 	<p>Add to <code>/etc/fstab</code>:</p>
@@ -73,7 +125,7 @@ smbpassword -a {username}</pre>
 	<h3>Before installation</h3>
 	<p>Before booting for the first time, set</p>
 	<pre>/etc/dphys-swapfile: CONF_SWAPSIZE=2048
-/etc/sysctl.comf: vm.swappiness=10</pre>
+/etc/sysctl.conf: vm.swappiness=10</pre>
 	<p>set <code>in /etc/hosts</code>:</p>
 	<pre>192.168.1.242    phoebe
 x.y.z.m          phoebe.schau.dk      # public IP address</pre>
