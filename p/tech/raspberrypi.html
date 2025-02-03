@@ -170,7 +170,7 @@ a2enmod auth_basic dav dav_fs dav_lock socache_shmcb ssl headers</pre>
 
 	<p>Reboot.</p>
 	<p>Unroll previous Loke backup.</p>
-	<pre>visudo     # add bs, under 'root'<pre>
+	<pre>visudo     # add bs, under 'root'</pre>
 	<p>Request certificate:</p>
 	<pre>certbot -d loke.schau.dk --authenticator standalone certonly</pre>
 	<p>Add <b>Mutex posixsem</b> to <code>/etc/apache2/apache2.conf</code>.</p>
