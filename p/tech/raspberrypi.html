@@ -22,7 +22,7 @@
 	<pre>hostnamectl set-hostname thor.schau.dk
 dpkg-reconfigure hostname
 dpkg-reconfigure tzdata			# select Europe/Copenhagen
-dpkg-reconfigure locales		# select en-dk.UTF-8 and UTF-8</pre>
+dpkg-reconfigure locales		# select en-dk.UTF-8 and en-us.UTF-8</pre>
 	<p>Disable services:</p>
 	<pre>for i in bluetooth avahi-daemon triggerhappy ModemManager; do echo $i; sudo systemctl stop $i; sudo systemctl disable $i; done</pre>
 	<p>Update:</p>
@@ -121,23 +121,23 @@ smbpassword -a {username}</pre>
 	<p>Map drive: use <i>schau\bs</i> as username.</p>
 	<p><br /></p>
 
-	<h2>Phoebe</h2>
-	<h3>Before installation</h3>
+	<h2>Loke</h2>
+	<h3>Before first boot</h3>
 	<p>Before booting for the first time, set</p>
-	<pre>/etc/dphys-swapfile: CONF_SWAPSIZE=2048
+	pre>/etc/dphys-swapfile: CONF_SWAPSIZE=1024
 /etc/sysctl.conf: vm.swappiness=10</pre>
 	<p>set <code>in /etc/hosts</code>:</p>
-	<pre>192.168.1.242    phoebe
-x.y.z.m          phoebe.schau.dk      # public IP address</pre>
+	<pre>192.168.1.242    loke 
+x.y.z.m          loke.schau.dk      # public IP address</pre>
 
-	<h3>After installation</h3>
+	<h3>After first boot</h3>
 	<p>Disable services:</p>
 	<pre>for i in bluetooth avahi-daemon triggerhappy ModemManager; do echo $i; sudo systemctl stop $i; sudo systemctl disable $i; done</pre>
 	<p>System configuration:</p>
-	<pre>hostnamectl set-hostname phoebe.schau.dk
+	<pre>hostnamectl set-hostname loke.schau.dk
 dpkg-reconfigure hostname
 dpkg-reconfigure tzdata			# select Europe/Copenhagen
-dpkg-reconfigure locales		# select en-dk.UTF-8 and UTF-8</pre>
+dpkg-reconfigure locales		# select en-dk.UTF-8 and en-us.UTF-8</pre>
 	<p>Update:</p>
 	<pre>apt update -y &amp;&amp; apt upgrade -y &amp;&amp; apt dist-upgrade -y &amp;&amp; apt full-upgrade -y &amp;&amp; apt autoremove -y</pre>
 	<p>Reboot.</p>
@@ -151,7 +151,7 @@ apt install python3-requests python3-feedparser python3-dateutil -y</pre>
 	<pre>error_log = syslog
 upload_max_filesize = 20M
 date.timezone = Europe/Copenhagen
-memory_limit = 512M	# only for apache/php.ini</pre>
+memory_limit = 256M	# only for apache/php.ini</pre>
 	<p>Add to <code>/etc/php/XX/cli/php.ini</code> at the bottom:</p>
 	<pre>[apc]
 apc.enable_cli=1</pre>
@@ -161,28 +161,18 @@ opcache.enable=1
 opcache.memory_consumption=128
 opcache.interned_strings_buffer=32</pre>
 
-	<p>Enable modules:</p>
-	<pre>a2enmod auth_basic headers rewrite socache_shmcb ssl php8.2</pre>
-
-	<p>If using Radicale, also enable:</p>
-	<pre>a2enmod proxy proxy_http</pre>
-
 	<p>Enable apcu:</p>
 	<pre>phpenmod apcu</pre>
 
+	<p>Enable modules:</p>
+	<pre>a2enmod auth_basic headers rewrite socache_shmcb ssl php8.2
+a2enmod auth_basic dav dav_fs dav_lock socache_shmcb ssl headers</pre>
+
 	<p>Reboot.</p>
-	<p>Disable sudo:</p>
-	<pre>sudo su -
-passwd			# set root password
-remove 'bs' from sudo group
-rm -f /etc/sudoers.d/010_pi-nopasswd
-rm /home/bs/.sudo_as_admin_successful</pre>
-	<p><br /></p>
-	<p><b>Everything below must be done as root - <i>su -</i>.</b></p>
-	<p><br /></p>
-	<p>Unroll previous Phoebe backup.</p>
+	<p>Unroll previous Loke backup.</p>
+	<pre>visudo     # add bs, under 'root'<pre>
 	<p>Request certificate:</p>
-	<pre>certbot -d phoebe.schau.dk --authenticator standalone certonly</pre>
+	<pre>certbot -d loke.schau.dk --authenticator standalone certonly</pre>
 	<p>Add <b>Mutex posixsem</b> to <code>/etc/apache2/apache2.conf</code>.</p>
 	<p>Uncomment or remove <b>Port 80</b> from/in <code>/etc/apache2/ports.conf</code>.</p>
 	<pre>rm -f /etc/apache2/conf-enabled/serve-cgi-bin.conf
@@ -196,7 +186,7 @@ ThreadsPerChild         25
 MaxRequestWorkers       150
 MaxConnectionsPerChild  0</pre>
 	<p>Setup WebDAV:</p>
-	<pre>a2enmod auth_basic dav dav_fs dav_lock socache_shmcb ssl headers
+	<pre>
 cd /home
 mkdir webdav
 cd webdav
@@ -206,19 +196,21 @@ touch users
 chmod 644 users
 htpasswd users bs
 cd /home
-mkdir -p webs/phoebe
+mkdir -p webs/loke
 chown -R www-data:www-data webdav webs
 cd /root/sys/apache2
 ./relink.sh</pre>
 	<p>Enable maintenance:</p>
 	<pre>crontab -e       # as root, add the line below:
 0 1 * * * /root/sys/maintenance.sh</pre>
+
+	<p>Enable bs crontab:</p>
+	<pre>crontab -e       # as bs, add the lines below:
+0 6,12,18 * * * /usr/bin/python3 /home/bs/sys/lichess.py
+0 5 * * * /usr/bin/python3 /home/bs/sys/events.py
+0 9 * * * /usr/bin/python3 /home/bs/sys/comics.py
+0 5,8,10,12,14,16,18,20,23 * * * /usr/bin/python3 /home/bs/sys/newsfeed.py
+0 4 * * * /home/bs/sys/webdav-backup.sh</pre>
 	<p>Reboot.</p>
-	<p>Also, if installing <i>roundcube</i>:</p>
-	<pre>mkdir /home/roundcubedata
-cd /home/roundcubedata
-sqlite3
-.file sqlite.db
-.exit</pre>
 </body>
 </html>
