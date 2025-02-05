@@ -9,6 +9,62 @@
 </head>
 <body>
 	<h1>Raspberry PI</h1>
+	<h2>Odin</h2>
+	<h3>Before first boot</h3>
+	<p>Before booting for the first time, set</p>
+	<pre>/etc/dphys-swapfile: CONF_SWAPSIZE=2048
+/etc/sysctl.conf: vm.swappiness=10</pre>
+	<p>set <code>in /etc/hosts</code>:</p>
+	<pre>192.168.3.242    odin.schau.dk    odin</pre>
+	<h3>After first boot</h3>
+	<p>It may have gotten another IP-address. Look in the router and then:</p>
+	<pre>nmtui</pre>
+	<p>... select <b>Edit a connection</b>, <b>Wired connection 1</b>. Give the profile a name and set IPv4 address.</p>
+	<p>Reboot.</p>
+	<p>System configuration:</p>
+	<pre>hostnamectl set-hostname odin.schau.dk
+dpkg-reconfigure hostname
+dpkg-reconfigure tzdata			# select Europe/Copenhagen
+dpkg-reconfigure locales		# select en-dk.UTF-8 and en-us.UTF-8</pre>
+	<p>Log off and the log on for new locale settings to take effect.</p>
+	<p>Disable services:</p>
+	<pre>for i in bluetooth avahi-daemon triggerhappy ModemManager; do echo $i; sudo systemctl stop $i; sudo systemctl disable $i; done</pre>
+	<p>Update:</p>
+	<pre>apt update -y &amp;&amp; apt upgrade -y &amp;&amp; apt dist-upgrade -y &amp;&amp; apt full-upgrade -y &amp;&amp; apt autoremove -y</pre>
+	<p>Install programs:</p>
+	<pre>apt install apt-transport-https software-properties-common -y
+apt install vim-nox python3 python3-pip pylint recode -y
+apt install postfix bsd-mailx -y</pre>
+	<p>Reboot.</p>
+
+	<h3>Home Assistant</h3>
+	<p>Before installing Home Assistant:</p>
+	<pre>sudo apt update -y &amp;&amp; sudo apt upgrade -y
+sudo apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev  libsqlite3-dev
+wget https://www.python.org/ftp/python/3.13.2/Python-3.13.2.tar.xz
+xz -d Python-3.13.2.tar.xz
+tar xf Python-3.13.2.tar
+cd Python-3.13.2
+./configure --enable-optimizations
+make -j 4
+sudo make altinstall
+sudo rm /usr/bin/python /usr/bin/python3 /usr/bin/python3.11-config
+sudo ln -s /usr/local/bin/python3.13 /usr/bin/python
+sudo ln -s /usr/bin/python /usr/bin/python3
+sudo ln -s /usr/local/bin/python3.13-config python3.13-config
+which python python3</pre>
+	<p>... should output:</p>
+	<pre>/usr/bin/python
+/usr/bin/python3</pre>
+	<p>Then:</p>
+	<pre>python -VV
+python3 -VV</pre>
+	<p>... should output something like:</p>
+	<pre>Python 3.13.2 (main, Feb  5 2025, 09:13:10) [GCC 12.2.0]
+Python 3.13.2 (main, Feb  5 2025, 09:13:10) [GCC 12.2.0]</pre>
+	<p>Date and GCC version may / will differ.</p>
+	<p>Continue with installation of <a href="https://www.home-assistant.io/installation/linux/#install-home-assistant-core">Home Assistant Core</a>.</p>
+
 	<h2>Thor</h2>
 	<h3>Before first boot</h3>
 	<p>Before booting for the first time, set</p>
@@ -23,6 +79,7 @@
 dpkg-reconfigure hostname
 dpkg-reconfigure tzdata			# select Europe/Copenhagen
 dpkg-reconfigure locales		# select en-dk.UTF-8 and en-us.UTF-8</pre>
+	<p>Log off and the log on for new locale settings to take effect.</p>
 	<p>Disable services:</p>
 	<pre>for i in bluetooth avahi-daemon triggerhappy ModemManager; do echo $i; sudo systemctl stop $i; sudo systemctl disable $i; done</pre>
 	<p>Update:</p>
@@ -61,66 +118,6 @@ for i in bs cfs; do smbpassword -a $i; done</pre>
 	<p>Map drive: use <i>schau\bs</i> as username.</p>
 	<p><br /></p>
 
-	<h2>Leah</h2>
-	<h3>After installation</h3>
-	<p>Add to <code>/etc/fstab</code>:</p>
-	<pre>LABEL=HOME      /home   ext4    defaults        0       1
-LABEL=TMP       /var/tmp        tmpfs   rw,mode=1777    0       1
-LABEL=DATA      /data   ext4    defaults,nofail 0       1</pre>
-	<p>Add to <code>$HOME/.bashrc</code>:</p>
-	<pre>export TMPDIR="/var/tmp"</pre>
-	<p>Disable un-needed services:</p>
-	<pre>for i in bluetooth avahi-daemon triggerhappy ModemManager; do echo $i; sudo systemctl stop $i; sudo systemctl disable $i; done</pre>
-	<p>Configure static IP:</p>
-	<pre>nmtui device status   # to see all network devices
-sudo nmtui edit "preconfigured"   # (use the name from the Connection column)</pre>
-	<p>Scroll to <b>IPv4 CONFIGURATION</b> and toggle to <i>Manual</i>. Fill in the rest.</p>
-	<h4>Home Assistant</h4>
-	<p>Before installing Home Assistant:</p>
-	<pre>sudo apt update -y &amp;&amp; sudo apt upgrade -y
-sudo apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev  libsqlite3-dev
-wget https://www.python.org/ftp/python/3.12.7/Python-3.12.7.tgz
-tar xzf Python-3.12.7.tgz
-cd Python-3.12.7
-./configure --enable-optimizations
-make -j 4
-sudo make altinstall
-sudo rm /usr/bin/python /usr/bin/python3
-sudo ln -s /usr/local/bin/python3.12 /usr/bin/python
-sudo ln -s /usr/bin/python /usr/bin/python3
-which python python3</pre>
-	<p>... should output:</p>
-	<pre>/usr/bin/python
-/usr/bin/python3</pre>
-	<p>Then:</p>
-	<pre>python -VV
-python3 -VV</pre>
-	<p>... should output something like:</p>
-	<pre>Python 3.12.7 (main, Nov 29 2024, 08:07:46) [GCC 10.2.1 20210110]
-Python 3.12.7 (main, Nov 29 2024, 08:07:46) [GCC 10.2.1 20210110]</pre>
-	<p>Date and GCC version may / will differ.</p>
-
-	<h3>Samba</h3>
-	<p>In <code>/etc/samba/smb.conf</code>:</p>
-	<ol>
-		<li>Change Workgroup to <i>SCHAU</i>.</li>
-		<li>Add this section:
-		<pre>[data]
-            path = /data
-            browsable = yes
-            guest ok = yes
-            read only = yes
-            write list = bs
-            create mask = 0600
-            directory mask = 0700
-            valid users = bs cfs</pre></li>
-	</ol>
-	<p>Adding user (as root):</p>
-	<pre>cd /var/lib/samba/private
-smbpassword -a {username}</pre>
-	<p>Map drive: use <i>schau\bs</i> as username.</p>
-	<p><br /></p>
-
 	<h2>Loke</h2>
 	<h3>Before first boot</h3>
 	<p>Before booting for the first time, set</p>
@@ -138,6 +135,7 @@ x.y.z.m          loke.schau.dk      # public IP address</pre>
 dpkg-reconfigure hostname
 dpkg-reconfigure tzdata			# select Europe/Copenhagen
 dpkg-reconfigure locales		# select en-dk.UTF-8 and en-us.UTF-8</pre>
+	<p>Log off and the log on for new locale settings to take effect.</p>
 	<p>Update:</p>
 	<pre>apt update -y &amp;&amp; apt upgrade -y &amp;&amp; apt dist-upgrade -y &amp;&amp; apt full-upgrade -y &amp;&amp; apt autoremove -y</pre>
 	<p>Reboot.</p>
