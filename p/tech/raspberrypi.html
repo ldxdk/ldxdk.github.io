@@ -63,6 +63,8 @@ python3 -VV</pre>
 	<pre>Python 3.13.2 (main, Feb  5 2025, 09:13:10) [GCC 12.2.0]
 Python 3.13.2 (main, Feb  5 2025, 09:13:10) [GCC 12.2.0]</pre>
 	<p>Date and GCC version may / will differ.</p>
+	<p>Remove ModemManager as it conflicts with the Sonoff ZHA Zigbee device:</p>
+	<pre>sudo apt purge modemmanager -y</pre>
 	<p>Continue with installation of <a href="https://www.home-assistant.io/installation/linux/#install-home-assistant-core">Home Assistant Core</a>.</p>
 
 	<h2>Thor</h2>
