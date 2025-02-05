@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Home Assistant</title>
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<h1>Home Assistant</h1>
+	<h2>Operation</h2>
+	<p>To get Home Assistant’s logging output, simple use journalctl.</p>
+	<pre>sudo journalctl -f -u home-assistant@homeassistant</pre>
+	<p>Because the log can scroll quite quickly, you can select to view only the error lines:</p>
+	<pre>sudo journalctl -f -u home-assistant@homeassistant | grep -i 'error'</pre>
+	<p><br /></p>
+
+	<h2>systemd control file</h2>
+	<p>Place in <tt>/etc/systemd/system/home-assistant@homeassistant</tt>.</p>
+	<pre>[Unit]
+Description=Home Assistant
+After=network-online.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/home/%i/.homeassistant
+ExecStart=/srv/homeassistant/bin/hass -c "/home/%i/.homeassistant"
+RestartForceExitStatus=100
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target</pre>
+	<p>Add to systemd:</p>
+	<pre>sudo systemctl --system daemon-reload
+sudo systemctl enable home-assistant@homeassistant
+sudo systemctl start home-assistant@homeassistant     # or reboot</pre>
+</body>
+</html>
