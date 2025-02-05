@@ -66,6 +66,28 @@ Python 3.13.2 (main, Feb  5 2025, 09:13:10) [GCC 12.2.0]</pre>
 	<p>Remove ModemManager as it conflicts with the Sonoff ZHA Zigbee device:</p>
 	<pre>sudo apt purge modemmanager -y</pre>
 	<p>Continue with installation of <a href="https://www.home-assistant.io/installation/linux/#install-home-assistant-core">Home Assistant Core</a>.</p>
+	<p>Place in <tt>/etc/systemd/system/home-assistant@homeassistant</tt>.</p>
+	<pre>[Unit]
+Description=Home Assistant
+After=network-online.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/home/%i/.homeassistant
+ExecStart=/srv/homeassistant/bin/hass -c "/home/%i/.homeassistant"
+RestartForceExitStatus=100
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target</pre>
+	<p>Add to systemd:</p>
+	<pre>sudo systemctl --system daemon-reload
+sudo systemctl enable home-assistant@homeassistant</pre>
+	<p>Add homeassistant to dialout group:</p>
+	<pre>useradd -aG dialout homeassistant</pre>
+	<p>Reboot.</p>
 
 	<h2>Thor</h2>
 	<h3>Before first boot</h3>
