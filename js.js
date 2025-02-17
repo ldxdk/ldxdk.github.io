@@ -9,11 +9,16 @@ const text = [ "ffffff", "000000", "ffffff", "000000",
 	       "000000", "ffffff", "000000", "ffffff",
 	       "ffffff", "000000", "ffffff", "000000" ];
 
+const link = [ "999", "999", "ccc", "444",
+		     "444", "444", "ccc", "444",
+		     "444", "ccc", "000", "ccc",
+		     "ccc", "444", "444", "444" ];
+
 // Background
 const index = Math.floor(Math.random() * 16);
 document.body.style.background = '#' + background[index];
 
-// ldx+stx
+// ldx+tx
 const pElem = document.getElementById('mnemonic');
 if (pElem !== null) {
 	var hex = index.toString(16);
@@ -29,8 +34,8 @@ for (var i = 0; i < elements.length; i++) {
 }
 
 // Links
-const clsName = index < 2 ? "grey" : (text[index] === '000000' ? 'white' : 'black');
+const linkColor = '#' + link[index];
 let anchors = document.getElementsByTagName('a');
 for (var i = 0; i < anchors.length; i++) {
-	anchors[i].classList.add(clsName);
+	anchors[i].style.color = linkColor;
 }

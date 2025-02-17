@@ -8,7 +8,7 @@ body {
 }
 
 #outer {
-	padding: 15% 0;
+	padding: 10% 0;
 }
 
 #inner {
@@ -26,4 +26,9 @@ body {
 	width: 12em;
 	margin: 0 auto;
 	font-size: 90%;
+}
+
+a {
+	text-decoration: none;
+	color: #999;
 }
