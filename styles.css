@@ -32,3 +32,23 @@ a {
 	text-decoration: none;
 	color: #999;
 }
+
+#menu {
+	width: 80%;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.menu-item {
+	width: 25%;
+	margin: 0;
+	float: left;
+	text-align: center;
+}
+
+@media only screen and (max-width: 640px) {
+	.menu-item {
+		width: 100%;
+		margin: 0.5em 0;
+	}
+}
