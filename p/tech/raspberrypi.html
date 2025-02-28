@@ -9,6 +9,17 @@
 </head>
 <body>
 	<h1>Raspberry PI</h1>
+	<h2>Raspberry PI Connect</h2>
+	<p>As ordinary user:</p>
+	<pre>sudo apt install rpi-connect-lite
+loginctl enable-linger
+rpi-connect on</pre>
+	<p>Reboot.</p>
+	<p>After boot:</p>
+	<pre>rpi-connect signin</pre>
+	<p>Reboot.</p>
+	<p>Complete registration online.</p>
+
 	<h2>Odin</h2>
 	<h3>Before first boot</h3>
 	<p>Before booting for the first time, set</p>
@@ -35,6 +46,9 @@ dpkg-reconfigure locales		# select en-dk.UTF-8 and en-us.UTF-8</pre>
 	<pre>apt install apt-transport-https software-properties-common -y
 apt install vim-nox python3 python3-pip pylint recode -y
 apt install postfix bsd-mailx -y</pre>
+	<p>Enable password on sudo - as root:</p>
+	<p>Remove <code>NOPASSWD: </code> from <code>/etc/sudoers.d/010_pi-nopasswd</code></p>
+	<p>Set password for user <b>bs</b>: <code>passwd bs</code></p>
 	<p>Reboot.</p>
 
 	<h3>Home Assistant</h3>
@@ -113,6 +127,9 @@ dpkg-reconfigure locales		# select en-dk.UTF-8 and en-us.UTF-8</pre>
 	<pre>apt install apt-transport-https software-properties-common -y
 apt install vim-nox python3 python3-pip pylint recode -y
 apt install samba -y</pre>
+	<p>Enable password on sudo - as root:</p>
+	<p>Remove <code>NOPASSWD: </code> from <code>/etc/sudoers.d/010_pi-nopasswd</code></p>
+	<p>Set password for user <b>bs</b>: <code>passwd bs</code></p>
 	<p>Reboot.</p>
 	<p>Prepare for data (as root):</p>
 	<pre>mkdir /home/data
@@ -193,6 +210,9 @@ a2enmod auth_basic dav dav_fs dav_lock socache_shmcb ssl headers</pre>
 	<p>Reboot.</p>
 	<p>Unroll previous Loke backup.</p>
 	<pre>visudo     # add bs, under 'root'</pre>
+	<p>Enable password on sudo - as root:</p>
+	<p>Remove <code>NOPASSWD: </code> from <code>/etc/sudoers.d/010_pi-nopasswd</code></p>
+	<p>Set password for user <b>bs</b>: <code>passwd bs</code></p>
 	<p>Request certificate:</p>
 	<pre>certbot -d loke.schau.dk --authenticator standalone certonly</pre>
 	<p>Add <b>Mutex posixsem</b> to <code>/etc/apache2/apache2.conf</code>.</p>
