@@ -1,6 +1,7 @@
 Notes,notes,https://ldx.dk/p/
 LinkedIn,linkedin,https://www.linkedin.com/feed/
 Lichess,lichess,https://lichess.org/
+Cryptpad,cryptpad,https://cryptpad.fr/drive/
 EB,eb,https://ekstrabladet.dk/
 BT,bt,https://www.bt.dk/
 Krak,krak,https://www.krak.dk/
@@ -20,3 +21,5 @@ PXSC,pxsc,https://bschau.github.io/games/pxsc
 KaedeRxn,kaederxn,https://bschau.github.io/games/kaederxn
 Orientalizer,orientalizer,https://bschau.github.io/fun/orientalizer
 Eur2Dkk,e2d,https://bschau.github.io/tools/e2d
+PI Connect,piconnect,https://connect.raspberrypi.com/devices
+Home Assistant,homeassistant,http://odin.schau.dk:8123/lovelace/0
